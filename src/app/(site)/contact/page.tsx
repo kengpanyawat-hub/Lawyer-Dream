@@ -8,21 +8,36 @@ import Link from 'next/link'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
+type ContactLike = {
+  email: string
+  phone: string
+  lineOfficial: string
+  serviceArea: string
+  address: string
+  mapEmbed?: string
+  mapOpen?: string
+  officeHours?: string
+  responseSLA?: string
+}
+
 export default function ContactPage() {
   const [status, setStatus] = useState<Status>('idle')
 
-  // ป้องกัน crash หากไม่มี field บางตัวใน CONTACT
-  const info = useMemo(() => ({
-    phone: CONTACT?.phone ?? '085-0005009',
-    email: CONTACT?.email ?? 'donlawatlaw@gmail.com',
-    line: CONTACT?.lineOfficial ?? '@128rwwqd',
-    serviceArea: CONTACT?.serviceArea ?? 'ทั่วราชอาณาจักร',
-    address: CONTACT?.address ?? '—',
-    mapEmbed: CONTACT?.mapEmbed ?? '',
-    mapOpen: CONTACT?.mapOpen ?? 'https://maps.google.com',
-    officeHours: CONTACT?.officeHours ?? 'ทุกวัน 09:00–18:00 (ยืดหยุ่นนัดพิเศษได้)',
-    responseSLA: CONTACT?.responseSLA ?? 'ตอบกลับภายใน 24 ชม.',
-  }), [])
+  // รวมข้อมูลติดต่อทั้งหมดไว้ที่ตัวแปร info ให้ตรงกับ JSX ด้านล่าง
+  const info = useMemo(() => {
+    const c = (CONTACT ?? {}) as Partial<ContactLike>
+    return {
+      email: c.email ?? '',
+      phone: c.phone ?? '',
+      line: c.lineOfficial ?? '',
+      serviceArea: c.serviceArea ?? 'ทั่วราชอาณาจักร',
+      address: c.address ?? '',
+      mapEmbed: c.mapEmbed ?? '',
+      mapOpen: c.mapOpen ?? 'https://maps.google.com',
+      officeHours: c.officeHours ?? 'ทุกวัน 09:00–18:00 (ยืดหยุ่นนัดพิเศษได้)',
+      responseSLA: c.responseSLA ?? 'ตอบกลับภายใน 24 ชม.',
+    }
+  }, [])
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -115,7 +130,7 @@ export default function ContactPage() {
                 <Mail className="h-4 w-4" /> ส่งอีเมลสอบถาม
               </a>
               <a className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-slate-800 ring-1 ring-slate-200"
-                 target="_blank"
+                 target="_blank" rel="noopener noreferrer"
                  href={`https://line.me/R/ti/p/%40${info.line.replace('@', '')}`}>
                 <MessageCircle className="h-4 w-4" /> เพิ่มเพื่อน LINE
               </a>
@@ -161,6 +176,7 @@ export default function ContactPage() {
               <a
                 href={info.mapOpen}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-primary-600 text-white text-sm"
               >
                 เปิดใน Google Maps <ArrowRight className="h-4 w-4" />

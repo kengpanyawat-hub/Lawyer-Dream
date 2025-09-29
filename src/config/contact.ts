@@ -7,8 +7,8 @@ export type ContactConfig = {
   address: string;
   mapEmbed?: string;
   mapOpen?: string;
-  officeHours?: string;   // << เพิ่ม
-  responseSLA?: string;   // << เพิ่ม
+  officeHours?: string;   // เพิ่ม
+  responseSLA?: string;   // เพิ่ม
 };
 
 export const CONTACT: ContactConfig = {

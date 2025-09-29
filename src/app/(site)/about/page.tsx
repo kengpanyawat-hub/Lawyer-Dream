@@ -170,7 +170,6 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-              <p className="img-note mt-2 text-center">แนะนำรูป 1000×1250px • เปลี่ยนได้ภายหลัง</p>
             </div>
           </div>
         </Card>

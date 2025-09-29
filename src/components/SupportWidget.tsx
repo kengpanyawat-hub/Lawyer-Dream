@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import type { Route } from 'next'
 import clsx from 'clsx'
 import { QUICK_REPLIES, getBotReply } from '@/config/botFaq'
 import { SUPPORT_LINKS, SupportLinkKind } from '@/config/supportLinks'
@@ -24,11 +25,14 @@ function LinkIcon({ kind, className }: { kind: SupportLinkKind; className?: stri
       </svg>
     )
   }
-  // CTA
   return <MessageCircle className={clsx(common, className)} />
 }
 
 type Msg = { role: 'user'|'bot'; text: string }
+
+function isInternal(href: string) {
+  return href.startsWith('/') && !href.startsWith('//')
+}
 
 export default function SupportWidget(){
   const [open, setOpen] = useState(false)
@@ -93,7 +97,7 @@ export default function SupportWidget(){
             </div>
             <button
               onClick={()=>setOpen(false)}
-              className="absolute right-3 top-3 p-1 rounded-md hover:bg-black/5"
+              className="absolute right-3 top-3 p-1 rounded-md hover:bg黑/5"
               aria-label="ปิด"
             >
               <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M18 6L6 18M6 6l12 12"/></svg>
@@ -120,20 +124,44 @@ export default function SupportWidget(){
           <div className="p-3">
             {tab==='links' ? (
               <div className="grid grid-cols-2 gap-3">
-                {SUPPORT_LINKS.map((l)=>(
-                  <Link
-                    key={l.href+l.label}
-                    href={l.href}
-                    target={l.external ? '_blank' : undefined}
-                    className="group rounded-xl p-3 border border-white/60 bg-white/70 hover:bg-white
-                               inline-flex items-center gap-2 transition"
-                  >
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-primary-700">
-                      <LinkIcon kind={l.kind} />
-                    </span>
-                    <span className="font-medium text-primary-900">{l.label}</span>
-                  </Link>
-                ))}
+                {SUPPORT_LINKS.map((l)=> {
+                  const inner = (
+                    <>
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 text-primary-700">
+                        <LinkIcon kind={l.kind} />
+                      </span>
+                      <span className="font-medium text-primary-900">{l.label}</span>
+                    </>
+                  )
+
+                  // internal route -> <Link>, external/tel/mail -> <a>
+                  if (!l.external && isInternal(l.href)) {
+                    return (
+                      <Link
+                        key={l.href + l.label}
+                        href={l.href as Route}
+                        prefetch={false}
+                        className="group rounded-xl p-3 border border-white/60 bg-white/70 hover:bg-white
+                                   inline-flex items-center gap-2 transition"
+                      >
+                        {inner}
+                      </Link>
+                    )
+                  }
+
+                  return (
+                    <a
+                      key={l.href + l.label}
+                      href={l.href}
+                      target={l.external ? '_blank' : undefined}
+                      rel={l.external ? 'noopener noreferrer' : undefined}
+                      className="group rounded-xl p-3 border border-white/60 bg-white/70 hover:bg-white
+                                 inline-flex items-center gap-2 transition"
+                    >
+                      {inner}
+                    </a>
+                  )
+                })}
                 <div className="col-span-2 text-xs text-slate-600 mt-1">
                   * ข้อมูลติดต่ออย่างเป็นทางการของสำนักกฎหมาย
                 </div>
