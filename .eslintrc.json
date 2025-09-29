@@ -1,9 +1,15 @@
 {
+  "root": true,
   "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
-    // ถ้าต้องการใช้ require ในไฟล์ .ts/.tsx ให้ปิดกฎนี้ (ไม่ปิดก็ได้ถ้าไม่ใช้ require)
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/no-require-imports": "off",
     "@typescript-eslint/no-var-requires": "off"
   }
 }
