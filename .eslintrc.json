@@ -1,5 +1,9 @@
 {
-  "extends": [
-    "next/core-web-vitals"
-  ]
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    // ถ้าต้องการใช้ require ในไฟล์ .ts/.tsx ให้ปิดกฎนี้ (ไม่ปิดก็ได้ถ้าไม่ใช้ require)
+    "@typescript-eslint/no-var-requires": "off"
+  }
 }
