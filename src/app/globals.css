@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+
+/* พื้นหลังใหม่: ฟองไล่สีฟ้า + เกรเดียนต์อ่อน (ไม่กระทบคลาสอื่น) */
+body {
+  @apply text-slate-800 antialiased;
+  background:
+    radial-gradient(600px 400px at 12% 0%,  rgba(59,130,246,.18), transparent 60%),
+    radial-gradient(700px 460px at 88% 6%,  rgba(99,102,241,.16), transparent 62%),
+    radial-gradient(520px 420px at 8% 58%,   rgba(59,130,246,.12), transparent 60%),
+    radial-gradient(680px 520px at 82% 70%,  rgba(59,130,246,.12), transparent 62%),
+    linear-gradient(180deg, #eaf2ff 0%, #f6f9ff 100%);
+}
+.btn-ghost{
+  @apply inline-flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2 text-sm text-slate-800 ring-1 ring-slate-200 hover:bg-white transition;
+}
+
+/* เดิมทั้งหมด: ไม่แก้ไขค่าใด ๆ */
+.glass {
+  @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-glass;
+}
+.container-max {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+.kbd {
+  @apply inline-flex items-center gap-1 rounded border border-slate-300 bg-white px-1.5 text-xs;
+}
+/* Note under images */
+.img-note { @apply text-xs text-slate-500 mt-1; }
