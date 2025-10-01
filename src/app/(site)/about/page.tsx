@@ -155,7 +155,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/0 via-transparent to-white/40 pointer-events-none" />
                 <div className="relative aspect-[4/5]">
                   <Image
-                    src="/images/lawyer-portrait.jpg"
+                    src="/images/lawyer-portrait2.jpg"
                     alt="ทนายดลวัฒน์ ไชยศรีหา (ท.ดรีม)"
                     fill
                     sizes="(max-width: 1024px) 100vw, 40vw"
