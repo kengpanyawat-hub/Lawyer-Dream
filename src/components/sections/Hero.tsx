@@ -40,7 +40,7 @@ export default function Hero(){
 			  transition={{ duration: .6, delay: .1 }}
 			>
 			  <Image
-				src="/images/hero.jpg"          // วางไฟล์จริงไว้ที่ /public/images/hero.jpg
+				src="/images/Sord_Jaeng_Team.jpg"          // วางไฟล์จริงไว้ที่ /public/images/hero.jpg
 				alt="สำนักกฎหมายดลวัฒน์และเพื่อน (ท.ดรีม)"
 				fill
 				priority
