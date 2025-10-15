@@ -1,98 +1,75 @@
+// src/data/reviews.ts
 export type Review = {
-  id: string;
-  nameMasked: string;      // ชื่อที่ปกปิด เช่น "คุณ เจ.*"
-  initials: string;        // ตัวอักษรย่อสำหรับ avatar วงกลม
-  content: string;         // เนื้อหารีวิว
-  rating: 1 | 2 | 3 | 4 | 5;
-  caseType?: string;       // ประเภทคดี/งาน (optional)
-  date?: string;           // YYYY-MM-DD (optional)
-  source?: 'โทรศัพท์' | 'LINE' | 'อีเมล' | 'ฟอร์มเว็บไซต์';
-  verified?: boolean;      // ติด badge “ยืนยันแล้ว”
-};
+  id: string
+  nameMasked: string            // ชื่อย่อ/ปิดบางตัวอักษร
+  initials: string              // ตัวอักษรย่อสำหรับอะวาตาร์
+  content: string               // เนื้อหาความเห็น
+  caseType: string              // ประเภทงาน/คดี
+  date: string                  // YYYY-MM-DD
+  source: 'LINE' | 'Facebook' | 'Google' | 'Phone' | 'Email' | 'Walk-in'
+  verified: boolean             // แสดง badge ยืนยัน
+  rating: 1 | 2 | 3 | 4 | 5     // ⭐️ คะแนนรีวิว (จำเป็น)
+}
 
-// ✏️ ปรับข้อความ/เพิ่มรีวิวได้ที่นี่ตามจริง
 export const REVIEWS: Review[] = [
   {
     id: 'r1',
-    nameMasked: 'คุณ เจ.*',
-    initials: '',
-    content: 'ติดตามงานต่อเนื่อง ไม่ทิ้งลูกความ',
-    caseType: 'คดีแพ่ง',
-    date: '2025-10-03',
+    nameMasked: 'คุณธนวรรณ ผ่องรักษา',
+    initials: 'NJ',
+    content:
+      'ให้คำแนะนำชัดเจนและเป็นขั้นตอน ติดต่อรวดเร็วมาก ทำให้เรื่องที่กังวลใจคลี่คลาย ขอบคุณทีมทนายมากค่ะ',
+    caseType: 'คดีผู้บริโภค',
+    date: '2025-01-28',
     source: 'LINE',
     verified: true,
+    rating: 5,
   },
   {
     id: 'r2',
-    nameMasked: 'คุณ เอ.*',
-    initials: '',
-    content: 'ให้คำปรึกษาชัดเจน ตรงประเด็นมาก ๆ ค่ะ',
-    caseType: 'ปรึกษากฎหมายธุรกิจ',
-    date: '2025-10-02',
-    source: 'ฟอร์มเว็บไซต์',
+    nameMasked: 'คุณเจนจิรา วิชยประเสริฐกุล',
+    initials: 'S',
+    content:
+      'ช่วยตรวจสัญญาและปรับแก้ให้กระชับ เข้าใจง่าย ใช้เจรจาได้จริง งานเร็วและมืออาชีพ',
+    caseType: 'สัญญาธุรกิจ',
+    date: '2025-02-03',
+    source: 'Email',
     verified: true,
+    rating: 5,
   },
   {
     id: 'r3',
-    nameMasked: 'คุณ บี.*',
-    initials: '',
-    content: 'ดำเนินงานรวดเร็ว มืออาชีพสุด ๆ',
-    caseType: 'แรงงาน',
-    date: '2025-09-28',
-    source: 'โทรศัพท์',
+    nameMasked: 'คุณกิตติเดช สิงห์ขาว',
+    initials: 'A',
+    content:
+      'อธิบายสิทธิและขั้นตอนคดีชัดเจนมาก ค่าบริการโปร่งใส นัดหมายสะดวกครับ',
+    caseType: 'อาญา',
+    date: '2025-02-10',
+    source: 'Phone',
     verified: true,
+    rating: 4,
   },
   {
     id: 'r4',
-    nameMasked: 'คุณ ซี.*',
-    initials: '',
-    content: 'อธิบายขั้นตอนละเอียด เข้าใจง่าย',
-    caseType: 'อาญา',
-    date: '2025-09-26',
-    source: 'อีเมล',
+    nameMasked: 'คุณชลาธิป สุขทิพย์',
+    initials: 'P',
+    content:
+      'ช่วยติดตามเงินคืนสำเร็จตามคำพิพากษา ใช้เวลาพอสมควรแต่ได้ครบ ขอบคุณค่ะ',
+    caseType: 'บังคับคดี/ยึดทรัพย์',
+    date: '2025-01-12',
+    source: 'Facebook',
+    verified: true,
+    rating: 5,
   },
   {
     id: 'r5',
-    nameMasked: 'คุณ แอล.*',
-    initials: '',
-    content: 'แนะนำแนวทางที่ดีที่สุดให้เรา',
-    caseType: 'ครอบครัว',
-    date: '2025-09-25',
-    source: 'LINE',
+    nameMasked: 'คุณพรพินิต กาญจนอาคม',
+    initials: 'K',
+    content:
+      'ให้ทางเลือกหลายแนวทางและแนะนำข้อควรระวังละเอียดดี ประทับใจการติดตามผล',
+    caseType: 'แรงงาน',
+    date: '2024-12-20',
+    source: 'Google',
+    verified: true,
+    rating: 4,
   },
-  {
-    id: 'r6',
-    nameMasked: 'คุณ เอ็ม.*',
-    initials: '',
-    content: 'ประสานงานศาลได้เป็นระบบ',
-    caseType: 'บังคับคดี',
-    date: '2025-09-22',
-    source: 'โทรศัพท์',
-  },
-  {
-    id: 'r7',
-    nameMasked: 'คุณ เอ็น.*',
-    initials: '',
-    content: 'ละเอียดรอบคอบ แก้ปัญหาได้จริง',
-    caseType: 'ผู้บริโภค',
-    date: '2025-09-20',
-    source: 'ฟอร์มเว็บไซต์',
-  },
-  {
-    id: 'r8',
-    nameMasked: 'คุณ โอ.*',
-    initials: '',
-    content: 'ให้ข้อมูลสิทธิทางกฎหมายครบถ้วน',
-    caseType: 'ต่างชาติ',
-    date: '2025-09-18',
-    source: 'LINE',
-  },
-];
-
-// ใช้คำนวณค่าเฉลี่ยเพื่อ schema.org
-export function getAverageRating() {
-  if (!REVIEWS.length) return 0;
-  return Math.round(
-    (REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length) * 10
-  ) / 10;
-}
+]

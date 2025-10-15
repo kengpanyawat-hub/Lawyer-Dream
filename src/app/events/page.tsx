@@ -1,73 +1,97 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import { EVENTS, formatThaiDate } from '@/data/events';
-import { useRef } from 'react';
-import { useInView } from 'framer-motion';
+
+/** ใช้ชนิดแบบยืดหยุ่นเฉพาะไฟล์นี้ เพื่อไม่ไปแก้ type กลางของโปรเจ็กต์ */
+type LooseEvent = Record<string, any>;
 
 export const metadata = { title: 'ข่าวสารและกิจกรรม' };
 
-const CATEGORIES = [
-  'กิจกรรม',
-  'ข่าวนิติ',
-  'ประชุม/สัมมนา/อบรม',
-  'การศึกษา',
-  'จัดซื้อจัดจ้าง',
-  'รับสมัครบุคลากร',
-] as const;
-
-function CategoryGrid({ list }: { list: typeof EVENTS }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const inView = useInView(ref, { once: true, margin: '0px 0px -20% 0px' });
+export default function EventsPage() {
+  // แปลงเป็นชนิดยืดหยุ่น เพื่อให้รองรับฟิลด์เสริม (เช่น cover หรือ images)
+  const list = EVENTS as unknown as LooseEvent[];
 
   return (
-    <div ref={ref} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {list.map((ev, i) => (
-        <Card key={ev.slug} className="overflow-hidden">
-          <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
-            <Image
-              src={ev.image}
-              alt={ev.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 360px"
-              priority={inView && i < 4}         // เลื่อนถึงแล้วรูป 4 ใบแรกจะโหลดทันที
-              loading={inView ? 'eager' : 'lazy'}
-            />
-          </div>
-          <div className="mt-3 space-y-2">
-            <h3 className="font-semibold line-clamp-2">{ev.title}</h3>
-            <p className="text-sm text-slate-600 line-clamp-2">{ev.excerpt}</p>
-            <div className="text-xs text-slate-500">{formatThaiDate(ev.date)}</div>
-            <Link href={`/events/${ev.slug}`} className="inline-flex text-primary-700 hover:underline text-sm">อ่านต่อ</Link>
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
-}
+    <div className="space-y-6">
+      <header className="rounded-3xl glass-deep ring-1 ring-white/40 p-6 md:p-8">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">ข่าวสารและกิจกรรม</h1>
+        <p className="mt-3 text-slate-700">
+          รวมอัปเดตงาน กิจกรรม และผลงานที่น่าสนใจของทีมงาน เพื่อให้คุณติดตามความเคลื่อนไหวได้อย่างต่อเนื่อง
+        </p>
+      </header>
 
-export default function EventsIndex() {
-  return (
-    <div className="relative container-max my-10">
-      <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">ข่าวสารและกิจกรรม</h1>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((ev: LooseEvent) => {
+          // รองรับทั้ง ev.cover, ev.image, ev.images[0]
+          const cover: string | null =
+            (ev?.cover as string | undefined) ??
+            (ev?.image as string | undefined) ??
+            (Array.isArray(ev?.images) ? (ev.images[0] as string | undefined) : undefined) ??
+            null;
 
-      <div className="flex flex-wrap gap-2 mb-5">
-        {CATEGORIES.map(c => (
-          <a key={c} href={`#${encodeURIComponent(c)}`} className="btn-ghost">{c}</a>
-        ))}
+          return (
+            <Card key={ev.slug} className="flex flex-col overflow-hidden">
+              {/* รูปปก (ถ้ามี) */}
+              {cover && (
+                <div className="aspect-[16/9] w-full overflow-hidden bg-slate-100">
+                  <img
+                    src={cover}
+                    alt={ev.title ?? 'cover'}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+
+              <div className="p-4 sm:p-5 flex-1 flex flex-col">
+                {/* วันที่ */}
+                <div className="text-xs text-slate-500">
+                  {ev.date ? formatThaiDate(ev.date) : null}
+                </div>
+
+                {/* ชื่อเรื่อง */}
+                <h3 className="mt-1 text-lg font-semibold text-slate-900 line-clamp-2">
+                  {ev.title}
+                </h3>
+
+                {/* คำโปรย (ถ้ามี) */}
+                {ev.summary && (
+                  <p className="mt-2 text-sm text-slate-700 line-clamp-3">{ev.summary}</p>
+                )}
+
+                {/* แท็ก (ถ้ามี) */}
+                {Array.isArray(ev.tags) && ev.tags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {ev.tags.map((t: string, i: number) => (
+                      <span
+                        key={i}
+                        className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-700"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-4 pt-3 border-t border-slate-100">
+                  <Link
+                    href={`/events/${ev.slug}`}
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                  >
+                    อ่านรายละเอียด
+                    <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-90">
+                      <path
+                        fill="currentColor"
+                        d="M12 4l1.41 1.41L8.83 10H20v2H8.83l4.58 4.59L12 18l-8-8z"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
       </div>
-
-      {CATEGORIES.map((cat) => {
-        const list = EVENTS.filter(e => e.category === cat);
-        if (!list.length) return null;
-        return (
-          <section key={cat} id={encodeURIComponent(cat)} className="space-y-4 mb-10">
-            <h2 className="text-xl font-semibold">{cat}</h2>
-            <CategoryGrid list={list} />
-          </section>
-        );
-      })}
     </div>
   );
 }

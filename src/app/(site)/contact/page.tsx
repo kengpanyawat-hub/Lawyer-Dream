@@ -14,6 +14,7 @@ import {
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
+/** ให้รองรับ readonly array ตามที่ CONTACT อาจถูกประกาศแบบ as const */
 type ContactLike = {
   email: string;
   phone: string;
@@ -24,8 +25,8 @@ type ContactLike = {
   mapOpen?: string;
   officeHours?: string;
   responseSLA?: string;
-  officePhotos?: string[];
-  facebookPages?: { label: string; url: string }[];
+  officePhotos?: readonly string[];
+  facebookPages?: ReadonlyArray<{ label: string; url: string }>;
 };
 
 export default function ContactPage() {
@@ -44,8 +45,9 @@ export default function ContactPage() {
       mapOpen: c.mapOpen ?? 'https://maps.google.com',
       officeHours: c.officeHours ?? 'ทุกวัน 09:00–18:00 (ยืดหยุ่นนัดพิเศษได้)',
       responseSLA: c.responseSLA ?? 'ตอบกลับภายใน 24 ชม.',
-      officePhotos: c.officePhotos ?? [],
-      facebookPages: c.facebookPages ?? [],
+      /** แปลงเป็นอาร์เรย์ปกติกรณีมาจาก readonly เพื่อความยืดหยุ่นต่อไป */
+      officePhotos: c.officePhotos ? [...c.officePhotos] : [],
+      facebookPages: c.facebookPages ? [...c.facebookPages] : [],
     };
   }, []);
 
@@ -259,7 +261,7 @@ export default function ContactPage() {
                   sizes="100vw"
                 />
               </div>
-              )}
+            )}
           </Modal>
         </motion.div>
       )}

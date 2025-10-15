@@ -10,24 +10,23 @@ export default function LenisProvider({ children }: Props) {
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // ปิดบน reduced-motion หรือถ้าเป็น iOS/มือถือบางรุ่นที่หน่วง
+    // ปิดเอฟเฟกต์ถ้าผู้ใช้ตั้งค่าลดแอนิเมชัน
     const reduceMotion =
       typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
     if (reduceMotion) return;
 
     const lenis = new Lenis({
-      // ค่าที่ลื่นแต่ไม่หน่วง touchpad
-      duration: 0.9,      // 0.8–1.0 กำลังพอดี
+      duration: 0.9,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      smoothTouch: false, // true จะนุ่มแต่หน่วงบนมือถือ
+      // แทนที่ smoothTouch ด้วยตัวเลือกที่มีจริงใน type ปัจจุบัน
+      syncTouch: false,
       wheelMultiplier: 0.9,
       touchMultiplier: 1.0,
-      // syncTouch: false (ค่าดีฟอลต์), infinite: false
     });
+
     lenisRef.current = lenis;
 
     let running = true;
@@ -38,7 +37,7 @@ export default function LenisProvider({ children }: Props) {
     };
     rafRef.current = requestAnimationFrame(raf);
 
-    // หยุดเมื่อแท็บไม่โฟกัส ลดภาระ CPU/GPU
+    // หยุด/เริ่ม animation เมื่อแท็บโฟกัส/ไม่โฟกัส
     const onVisibility = () => {
       const visible = document.visibilityState === 'visible';
       running = visible;
@@ -51,7 +50,6 @@ export default function LenisProvider({ children }: Props) {
     };
     document.addEventListener('visibilitychange', onVisibility, { passive: true });
 
-    // ปิดเมื่อ unmount
     return () => {
       document.removeEventListener('visibilitychange', onVisibility);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);

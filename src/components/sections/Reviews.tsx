@@ -1,8 +1,8 @@
 'use client';
 
-import { Star, ShieldCheck, Quote, Gavel, CalendarDays } from 'lucide-react';
+import { Star, ShieldCheck, Quote } from 'lucide-react';
 import Card from '@/components/ui/Card';
-import { REVIEWS, getAverageRating } from '@/data/reviews';
+import { REVIEWS } from '@/data/reviews';
 import React from 'react';
 
 // ดาวให้ screen reader อ่านได้
@@ -29,13 +29,18 @@ function BadgeVerified() {
 }
 
 export default function ReviewsSection() {
-  const avg = getAverageRating();
+  // คำนวณคะแนนเฉลี่ยภายในไฟล์ (เลี่ยงการ import ฟังก์ชันที่ไม่มี export)
+  const avg =
+    REVIEWS.length > 0
+      ? Math.round(
+          (REVIEWS.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / REVIEWS.length) * 10
+        ) / 10
+      : 5;
 
   return (
     <section className="container-max my-10">
-      {/* Header */}
-      <div className="mb-4 flex items-end justify-between gap-4">
-      </div>
+      {/* Header (เผื่อไว้ขยายในอนาคต) */}
+      <div className="mb-4 flex items-end justify-between gap-4" />
 
       {/* Grid */}
       <div className="grid gap-4 md:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -54,7 +59,7 @@ export default function ReviewsSection() {
               <Stars count={r.rating} />
             </div>
 
-            <p className="mt-3 text-slate-700 leading-relaxed">{r.content}</p>
+            <p className="mt-3 leading-relaxed text-slate-700">{r.content}</p>
           </Card>
         ))}
       </div>
@@ -62,6 +67,7 @@ export default function ReviewsSection() {
       {/* JSON-LD เพื่อ SEO */}
       <script
         type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',
