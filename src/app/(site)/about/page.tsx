@@ -105,7 +105,7 @@ export default function AboutPage() {
             <div className="p-4 md:p-6">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-200">
                 <ShieldCheck className="h-4 w-4 text-primary-600" />
-                สำนักกฎหมายดลวัฒน์และเพื่อน (ท.ดรีม)
+                สำนักกฎหมายดลวัฒน์และเพื่อน
               </div>
               <h1 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-slate-900">เกี่ยวกับเรา</h1>
               <p className="mt-4 text-slate-700 leading-relaxed">{LAWYER.bio}</p>
