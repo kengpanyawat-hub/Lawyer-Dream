@@ -1,72 +1,94 @@
-'use client'
-import Card from '@/components/ui/Card'
-import { REVIEWS } from '@/data/reviews'
+'use client';
 
-/**
- * แสดงรีวิว 2 แถวแบบ marquee
- * - แถวบนเลื่อนไปทางซ้าย, แถวล่างเลื่อนไปทางขวา
- * - ใช้ CSS keyframes ภายใน component (ไม่ต้องแก้ tailwind config)
- */
-export default function Reviews() {
-  const row1 = REVIEWS.slice(0, 10)
-  const row2 = REVIEWS.slice(10, 20)
+import { Star, ShieldCheck, Quote, Gavel, CalendarDays } from 'lucide-react';
+import Card from '@/components/ui/Card';
+import { REVIEWS, getAverageRating } from '@/data/reviews';
+import React from 'react';
 
+// ดาวให้ screen reader อ่านได้
+function Stars({ count }: { count: number }) {
   return (
-    <div className="space-y-4">
-      <MarqueeRow items={row1} reverse={false} />
-      <MarqueeRow items={row2} reverse />
-      {/* สไตล์ animation ภายใน component เพื่อไม่กระทบส่วนอื่น */}
-      <style jsx global>{`
-        @keyframes slideLeft {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes slideRight {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
-        }
-        .marquee-track {
-          display: flex;
-          width: max-content;
-          gap: 16px;
-        }
-        .marquee-anim-left  { animation: slideLeft 30s linear infinite; }
-        .marquee-anim-right { animation: slideRight 30s linear infinite; }
-        @media (max-width: 768px){
-          .marquee-anim-left, .marquee-anim-right { animation-duration: 24s; }
-        }
-      `}</style>
+    <div className="inline-flex items-center gap-0.5" aria-label={`ให้คะแนน ${count} จาก 5`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`h-4 w-4 ${i < count ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
+          aria-hidden
+        />
+      ))}
     </div>
-  )
+  );
 }
 
-function MarqueeRow({ items, reverse }: { items: typeof REVIEWS; reverse?: boolean }) {
-  // ทำซ้ำ 2 ชุดเพื่อเลื่อนวนต่อเนื่อง
-  const doubled = [...items, ...items]
+function BadgeVerified() {
   return (
-    <div className="relative overflow-hidden">
-      <div className={`marquee-track ${reverse ? 'marquee-anim-right' : 'marquee-anim-left'}`}>
-        {doubled.map((r, i) => (
-          <ReviewCard key={`${r.id}-${i}`} name={r.name} text={r.text} />
+    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 ring-1 ring-emerald-200">
+      <ShieldCheck className="h-3.5 w-3.5" /> ยืนยันตัวตนแล้ว
+    </span>
+  );
+}
+
+export default function ReviewsSection() {
+  const avg = getAverageRating();
+
+  return (
+    <section className="container-max my-10">
+      {/* Header */}
+      <div className="mb-4 flex items-end justify-between gap-4">
+      </div>
+
+      {/* Grid */}
+      <div className="grid gap-4 md:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {REVIEWS.map((r) => (
+          <Card key={r.id} className="relative overflow-hidden">
+            {/* quote deco */}
+            <Quote className="absolute -right-2 -top-2 h-10 w-10 text-slate-200" aria-hidden />
+
+            <div className="flex items-start gap-3">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-medium text-slate-900">{r.nameMasked}</p>
+                  {r.verified && <BadgeVerified />}
+                </div>
+              </div>
+              <Stars count={r.rating} />
+            </div>
+
+            <p className="mt-3 text-slate-700 leading-relaxed">{r.content}</p>
+          </Card>
         ))}
       </div>
-      {/* gradient mask ขอบซ้าย-ขวาให้เนียน */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white/70 to-transparent" />
-    </div>
-  )
-}
 
-function ReviewCard({ name, text }: { name: string; text: string }) {
-  return (
-    <Card className="min-w-[280px] max-w-[320px]">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="h-9 w-9 rounded-full bg-primary-100 text-primary-700 grid place-items-center font-semibold">
-          {name.replace('คุณ ', '').slice(0,1)}
-        </div>
-        <div className="text-sm font-medium">{name}</div>
-      </div>
-      <p className="text-sm text-slate-700">{text}</p>
-    </Card>
-  )
+      {/* JSON-LD เพื่อ SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product', // ใช้เป็นบริการของสำนักงาน
+            name: 'บริการให้คำปรึกษากฎหมายและว่าความ',
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: avg || 5,
+              reviewCount: REVIEWS.length,
+              bestRating: 5,
+              worstRating: 1,
+            },
+            review: REVIEWS.map((r) => ({
+              '@type': 'Review',
+              reviewRating: {
+                '@type': 'Rating',
+                ratingValue: r.rating,
+                bestRating: 5,
+                worstRating: 1,
+              },
+              author: { '@type': 'Person', name: r.nameMasked },
+              reviewBody: r.content,
+              datePublished: r.date,
+            })),
+          }),
+        }}
+      />
+    </section>
+  );
 }

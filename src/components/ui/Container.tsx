@@ -1,3 +1,5 @@
-export default function Container({ children }: { children: React.ReactNode }) {
-  return <div className="container-max">{children}</div>
+import React from 'react';
+
+export default function Container({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={`container-max ${className}`}>{children}</div>;
 }

@@ -59,7 +59,7 @@ export default function Navbar(){
             <Link href={toRoute('/')} className="flex items-center gap-3 shrink-0">
               <Image src="/images/logo.jpg" alt="โลโก้" width={36} height={36} className="rounded-lg" />
               <span className="hidden sm:block font-semibold text-white/90">
-                สำนักกฎหมายดลวัฒน์และเพื่อน (ท.ดรีม)
+                สำนักกฎหมายดลวัฒน์และเพื่อน
               </span>
             </Link>
 

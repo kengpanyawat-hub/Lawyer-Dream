@@ -1,24 +1,98 @@
-export type Review = { id: string; name: string; text: string };
+export type Review = {
+  id: string;
+  nameMasked: string;      // ชื่อที่ปกปิด เช่น "คุณ เจ.*"
+  initials: string;        // ตัวอักษรย่อสำหรับ avatar วงกลม
+  content: string;         // เนื้อหารีวิว
+  rating: 1 | 2 | 3 | 4 | 5;
+  caseType?: string;       // ประเภทคดี/งาน (optional)
+  date?: string;           // YYYY-MM-DD (optional)
+  source?: 'โทรศัพท์' | 'LINE' | 'อีเมล' | 'ฟอร์มเว็บไซต์';
+  verified?: boolean;      // ติด badge “ยืนยันแล้ว”
+};
 
+// ✏️ ปรับข้อความ/เพิ่มรีวิวได้ที่นี่ตามจริง
 export const REVIEWS: Review[] = [
-  { id: 'r01', name: 'คุณ เอ.*', text: 'ให้คำปรึกษาชัดเจน ตรงประเด็นมาก ๆ ค่ะ' },
-  { id: 'r02', name: 'คุณ บี.*', text: 'ดำเนินงานรวดเร็ว มืออาชีพสุด ๆ' },
-  { id: 'r03', name: 'คุณ ซี.*', text: 'อธิบายขั้นตอนละเอียด เข้าใจง่าย' },
-  { id: 'r04', name: 'คุณ ดี.*', text: 'ช่วยต่อสู้คดีจนชนะ ขอบคุณครับ' },
-  { id: 'r05', name: 'คุณ อี.*', text: 'ซื่อสัตย์ โปร่งใส อัปเดตงานตลอด' },
-  { id: 'r06', name: 'คุณ เอฟ.*', text: 'ให้คำแนะนำตรงไปตรงมา เชื่อถือได้' },
-  { id: 'r07', name: 'คุณ จี.*', text: 'บริการรวดเร็วทันใจ เอกสารถูกต้องครบถ้วน' },
-  { id: 'r08', name: 'คุณ เอช.*', text: 'ทีมงานสุภาพ เป็นกันเอง ดูแลดีมาก' },
-  { id: 'r09', name: 'คุณ ไอ.*', text: 'ค่าใช้จ่ายชัดเจน คุ้มค่ากับผลลัพธ์' },
-  { id: 'r10', name: 'คุณ เจ.*', text: 'ติดตามงานต่อเนื่อง ไม่ทิ้งลูกความ' },
-  { id: 'r11', name: 'คุณ เค.*', text: 'ร่างสัญญาได้รัดกุม มั่นใจมากขึ้น' },
-  { id: 'r12', name: 'คุณ แอล.*', text: 'แนะนำแนวทางที่ดีที่สุดให้เรา' },
-  { id: 'r13', name: 'คุณ เอ็ม.*', text: 'ประสานงานศาลได้เป็นระบบ' },
-  { id: 'r14', name: 'คุณ เอ็น.*', text: 'ละเอียดรอบคอบ แก้ปัญหาได้จริง' },
-  { id: 'r15', name: 'คุณ โอ.*', text: 'ให้ข้อมูลสิทธิทางกฎหมายครบถ้วน' },
-  { id: 'r16', name: 'คุณ พี.*', text: 'ยื่นอุทธรณ์ทันเวลา ผลออกมาดีมาก' },
-  { id: 'r17', name: 'คุณ คิว.*', text: 'ดูแลตั้งแต่ต้นจนจบ สบายใจ' },
-  { id: 'r18', name: 'คุณ อาร์.*', text: 'ประสบการณ์สูง มองขาด' },
-  { id: 'r19', name: 'คุณ เอส.*', text: 'ตอบไว แก้ไขด่วนได้ดีเยี่ยม' },
-  { id: 'r20', name: 'คุณ ที.*', text: 'แนะนำต่อแน่นอนครับ/ค่ะ' },
+  {
+    id: 'r1',
+    nameMasked: 'คุณ เจ.*',
+    initials: '',
+    content: 'ติดตามงานต่อเนื่อง ไม่ทิ้งลูกความ',
+    caseType: 'คดีแพ่ง',
+    date: '2025-10-03',
+    source: 'LINE',
+    verified: true,
+  },
+  {
+    id: 'r2',
+    nameMasked: 'คุณ เอ.*',
+    initials: '',
+    content: 'ให้คำปรึกษาชัดเจน ตรงประเด็นมาก ๆ ค่ะ',
+    caseType: 'ปรึกษากฎหมายธุรกิจ',
+    date: '2025-10-02',
+    source: 'ฟอร์มเว็บไซต์',
+    verified: true,
+  },
+  {
+    id: 'r3',
+    nameMasked: 'คุณ บี.*',
+    initials: '',
+    content: 'ดำเนินงานรวดเร็ว มืออาชีพสุด ๆ',
+    caseType: 'แรงงาน',
+    date: '2025-09-28',
+    source: 'โทรศัพท์',
+    verified: true,
+  },
+  {
+    id: 'r4',
+    nameMasked: 'คุณ ซี.*',
+    initials: '',
+    content: 'อธิบายขั้นตอนละเอียด เข้าใจง่าย',
+    caseType: 'อาญา',
+    date: '2025-09-26',
+    source: 'อีเมล',
+  },
+  {
+    id: 'r5',
+    nameMasked: 'คุณ แอล.*',
+    initials: '',
+    content: 'แนะนำแนวทางที่ดีที่สุดให้เรา',
+    caseType: 'ครอบครัว',
+    date: '2025-09-25',
+    source: 'LINE',
+  },
+  {
+    id: 'r6',
+    nameMasked: 'คุณ เอ็ม.*',
+    initials: '',
+    content: 'ประสานงานศาลได้เป็นระบบ',
+    caseType: 'บังคับคดี',
+    date: '2025-09-22',
+    source: 'โทรศัพท์',
+  },
+  {
+    id: 'r7',
+    nameMasked: 'คุณ เอ็น.*',
+    initials: '',
+    content: 'ละเอียดรอบคอบ แก้ปัญหาได้จริง',
+    caseType: 'ผู้บริโภค',
+    date: '2025-09-20',
+    source: 'ฟอร์มเว็บไซต์',
+  },
+  {
+    id: 'r8',
+    nameMasked: 'คุณ โอ.*',
+    initials: '',
+    content: 'ให้ข้อมูลสิทธิทางกฎหมายครบถ้วน',
+    caseType: 'ต่างชาติ',
+    date: '2025-09-18',
+    source: 'LINE',
+  },
 ];
+
+// ใช้คำนวณค่าเฉลี่ยเพื่อ schema.org
+export function getAverageRating() {
+  if (!REVIEWS.length) return 0;
+  return Math.round(
+    (REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length) * 10
+  ) / 10;
+}

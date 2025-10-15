@@ -20,7 +20,7 @@ const menu: { label: string; href: string }[] = [
 const socials = [
   {
     label: 'Facebook',
-    href: 'https://facebook.com',
+    href: 'https://www.facebook.com/Donlawatandfriend',
     icon: <Facebook className="h-5 w-5" />,
     newTab: true,
   },
@@ -64,7 +64,7 @@ export default function Footer() {
               />
             </div>
             <p className="mt-4 text-center text-white/90">
-              สำนักกฎหมายดลวัฒน์และเพื่อน (ท.ดรีม) · ให้คำปรึกษาและว่าความทั่วราชอาณาจักร
+              สำนักกฎหมายดลวัฒน์และเพื่อน · ให้คำปรึกษาและว่าความทั่วราชอาณาจักร
             </p>
 
             {/* โซเชียล */}
