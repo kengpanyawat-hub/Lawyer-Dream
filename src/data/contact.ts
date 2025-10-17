@@ -5,8 +5,8 @@ export const CONTACT = {
   lineOfficial: '@dlaw',
   serviceArea: 'ทั่วราชอาณาจักร',
   address: 'สำนักกฎหมายดลวัฒน์และเพื่อน 100/15 ถนนไทยรามัญ แขวงสามวาตะวันตก เขตคลองสามวา กรุงเทพมหานคร 10510',
-  mapEmbed: 'https://www.google.com/maps?q=สำนักกฎหมายดลวัฒน์และเพื่อน%20100/64%20ถนนสามวาตะวันตก%20เขตคลองสามวา%20กรุงเทพมหานคร%2010510&hl=th&z=16&output=embed', // ลิงก์ embed แผนที่ (ถ้ามี)
-  mapOpen: 'https://www.google.com/maps/search/?api=1&query=สำนักกฎหมายดลวัฒน์และเพื่อน%20100/64%20ถนนสามวาตะวันตก%20เขตคลองสามวา%20กรุงเทพมหานคร%2010510',
+  mapEmbed: 'https://www.google.com/maps?q=สำนักกฎหมายดลวัฒน์และเพื่อน%20100/15%20ถนนสามวาตะวันตก%20เขตคลองสามวา%20กรุงเทพมหานคร%2010510&hl=th&z=16&output=embed', // ลิงก์ embed แผนที่ (ถ้ามี)
+  mapOpen: 'https://maps.app.goo.gl/8Hka4XJ31UbzxrMe7',
   officeHours: 'ทุกวัน 09:00–18:00 (ยืดหยุ่นนัดพิเศษได้)',
   responseSLA: 'ตอบกลับภายใน 24 ชม.',
 
